@@ -7,7 +7,7 @@ import java.util.HashMap;
 @Service
 public class CurrencyEngine {
     private HashMap<String, Double> currencies = new HashMap<>();
-
+    //TODO Change to Service
 
     public double get_amount_in_zar(String currencyCode, double amount){
         this.currencies.put("ZAR-KWS", 6.10);

@@ -8,7 +8,6 @@ import org.springframework.context.ApplicationContext;
 @SpringBootApplication
 public class USSDApplication {
 
-
 	public static void main(String[] args)
 	{
 		ApplicationContext ctx = SpringApplication.run(USSDApplication.class, args);

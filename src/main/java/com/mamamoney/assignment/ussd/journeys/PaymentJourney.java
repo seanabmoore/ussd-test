@@ -5,8 +5,7 @@ import com.mamamoney.assignment.model.USSDSession;
 import com.mamamoney.assignment.model.USSDRequest;
 import com.mamamoney.assignment.ussd.menus.payment.*;
 
-// TODO Make prototype pattern
-
+//TODO Make Prototype Pattern
 public class PaymentJourney extends Journey {
     private PaymentMenu currentMenu;
     private PaymentMenu invalidInputMenu;
@@ -46,21 +45,23 @@ public class PaymentJourney extends Journey {
 
         if ( this.invalidInputMenu.getId().equals(menuID)){
             menuID = ussdSession.getPreviousScreenID();
+            userEntry = null;
         }
 
         PaymentMenu currentM = this.getMenu(menuID);
         ussdSession.setCurrentScreenID(currentM.getId());
+
         try {
-            if (userEntry != null && !"".equals(userEntry.trim())) {
-                currentM.handleUserInput(ussdSession.getPayment(), ussdRequest.getUserEntry());
+            if (userEntry !=null && !"".equals(userEntry)) {
+                currentM.handleUserInput(ussdSession.getPayment(), userEntry);
                 if (currentM.hasNext()) {
                     ussdSession.setCurrentScreenID(currentM.getNext());
                 } else {
                     ussdSession.setCurrentScreenID(initial.getId());
                 }
             }
+            currentM = this.getMenu(ussdSession.getCurrentScreenID());
             return currentM.getMenu(ussdSession);
-
 
         } catch (UserInputException uie) {
             ussdSession.setCurrentScreenID(this.invalidInputMenu.getId());
