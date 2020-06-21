@@ -1,4 +1,4 @@
-package com.mamamoney.assignment;
+package com.mamamoney.assignment.service;
 
 import org.springframework.stereotype.Service;
 

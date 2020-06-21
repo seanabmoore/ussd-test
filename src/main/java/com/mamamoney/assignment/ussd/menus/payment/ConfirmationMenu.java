@@ -1,8 +1,9 @@
 package com.mamamoney.assignment.ussd.menus.payment;
 
 
-import com.mamamoney.assignment.CurrencyEngine;
-import com.mamamoney.assignment.models.Payment;
+import com.mamamoney.assignment.service.CurrencyEngine;
+import com.mamamoney.assignment.model.USSDSession;
+import com.mamamoney.assignment.model.Payment;
 
 public class ConfirmationMenu extends PaymentMenu {
     // TODO replace with Service
@@ -11,9 +12,9 @@ public class ConfirmationMenu extends PaymentMenu {
     private static final String menu = "Your person you are sending to, will receive %s %s \n 1) Confirm";
 
     @Override
-    public String getMenu(Payment payment) {
-        String currencyCode = payment.getCountry().getCurrencyCode();
-        double randAmount = payment.getRandAmount();
+    public String getMenu(USSDSession ussdSession) {
+        String currencyCode = ussdSession.getPayment().getCountry().getCurrencyCode();
+        double randAmount = ussdSession.getPayment().getRandAmount();
         double foreignCurrencyAmount = currencyEngine.get_amount_in_zar(currencyCode, randAmount);
         return String.format(menu, foreignCurrencyAmount, currencyCode);
     }

@@ -1,4 +1,4 @@
-package com.mamamoney.assignment.ussd;
+package com.mamamoney.assignment.model;
 
 public class USSDRequest {
     private String sessionId;

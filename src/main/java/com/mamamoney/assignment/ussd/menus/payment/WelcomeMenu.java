@@ -1,7 +1,8 @@
 package com.mamamoney.assignment.ussd.menus.payment;
 
-import com.mamamoney.assignment.models.Country;
-import com.mamamoney.assignment.models.Payment;
+import com.mamamoney.assignment.model.USSDSession;
+import com.mamamoney.assignment.model.Country;
+import com.mamamoney.assignment.model.Payment;
 import com.mamamoney.assignment.ussd.journeys.UserInputException;
 
 public class WelcomeMenu extends PaymentMenu {
@@ -15,7 +16,7 @@ public class WelcomeMenu extends PaymentMenu {
     }
 
     @Override
-    public String getMenu(Payment payment) {
+    public String getMenu(USSDSession ussdSession) {
         return menu;
     }
 

@@ -1,6 +1,8 @@
-package com.mamamoney.assignment.models;
+package com.mamamoney.assignment.model;
 
-public class Country {
+import java.io.Serializable;
+
+public class Country implements Serializable {
     private String id;
     private String name;
     private String currencyCode;
@@ -13,5 +15,11 @@ public class Country {
 
     public String getCurrencyCode() {
         return currencyCode;
+    }
+
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

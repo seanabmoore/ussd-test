@@ -1,4 +1,4 @@
-package com.mamamoney.assignment.models;
+package com.mamamoney.assignment.model;
 
 import java.io.Serializable;
 

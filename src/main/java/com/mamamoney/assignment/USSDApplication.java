@@ -6,11 +6,11 @@ import org.springframework.context.ApplicationContext;
 
 
 @SpringBootApplication
-public class SpringBootDemoApplication {
+public class USSDApplication {
 
 
 	public static void main(String[] args)
 	{
-		ApplicationContext ctx = SpringApplication.run(SpringBootDemoApplication.class, args);
+		ApplicationContext ctx = SpringApplication.run(USSDApplication.class, args);
 	}
 }

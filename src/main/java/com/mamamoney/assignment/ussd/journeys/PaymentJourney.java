@@ -1,29 +1,19 @@
 package com.mamamoney.assignment.ussd.journeys;
 
 
-import com.mamamoney.assignment.models.Payment;
-import com.mamamoney.assignment.ussd.USSDRequest;
+import com.mamamoney.assignment.model.USSDSession;
+import com.mamamoney.assignment.model.USSDRequest;
 import com.mamamoney.assignment.ussd.menus.payment.*;
-
-import java.io.Serializable;
 
 // TODO Make prototype pattern
 
-public class PaymentJourney implements Serializable {
-
-    private String sessionId;
-    private String msisdn;
-    private Payment payment;
-
+public class PaymentJourney extends Journey {
     private PaymentMenu currentMenu;
     private PaymentMenu invalidInputMenu;
     private PaymentMenu exceptionMenu;
     private PaymentMenu initial;
 
-    public PaymentJourney(String sessionId, String msisdn) {
-        this.sessionId = sessionId;
-        this.msisdn = msisdn;
-
+    public PaymentJourney() {
         PaymentMenu welcomeMenu = new WelcomeMenu();
         PaymentMenu paymentAmount = new PaymentAmountMenu();
         PaymentMenu confirmationMenu = new ConfirmationMenu();
@@ -32,40 +22,54 @@ public class PaymentJourney implements Serializable {
         this.invalidInputMenu = new InvalidInputMenu();
         this.exceptionMenu = new ExceptionMenu();
 
-        welcomeMenu.setNext(paymentAmount);
-        paymentAmount.setNext(confirmationMenu);
-        confirmationMenu.setNext(paymentEndMenu);
+        welcomeMenu.setNext(paymentAmount.getId());
+        paymentAmount.setNext(confirmationMenu.getId());
+        confirmationMenu.setNext(paymentEndMenu.getId());
+
+        this.addMenus(welcomeMenu);
+        this.addMenus(paymentAmount);
+        this.addMenus(confirmationMenu);
+        this.addMenus(paymentEndMenu);
 
         this.currentMenu = welcomeMenu;
         this.initial = welcomeMenu;
-        this.payment = new Payment();
     }
 
-    public String get_menu(){
-        try {
-            return currentMenu.getMenu(this.payment);
-        }catch(Exception ex){
-            this.currentMenu = this.exceptionMenu;
-            return this.exceptionMenu.getMenu(payment);
+    public String handleRequest(USSDRequest ussdRequest, USSDSession ussdSession) {
+        String menuID = ussdSession.getCurrentScreenID();
+        String userEntry = ussdRequest.getUserEntry();
+        if (menuID == null) {
+            // First Time
+            menuID = initial.getId();
+            userEntry = null;
         }
-    }
 
-    public void handleUserInput(USSDRequest request){
-        String userInput = request.getUserEntry();
+        if ( this.invalidInputMenu.getId().equals(menuID)){
+            menuID = ussdSession.getPreviousScreenID();
+        }
+
+        PaymentMenu currentM = this.getMenu(menuID);
+        ussdSession.setCurrentScreenID(currentM.getId());
         try {
-            this.currentMenu.handleUserInput(this.payment, userInput);
-            if (this.currentMenu.hasNext()){
-                this.currentMenu = this.currentMenu.getNext();
-            }else{
-                this.currentMenu = initial;
+            if (userEntry != null && !"".equals(userEntry.trim())) {
+                currentM.handleUserInput(ussdSession.getPayment(), ussdRequest.getUserEntry());
+                if (currentM.hasNext()) {
+                    ussdSession.setCurrentScreenID(currentM.getNext());
+                } else {
+                    ussdSession.setCurrentScreenID(initial.getId());
+                }
             }
-        }catch (UserInputException uie){
-            this.invalidInputMenu.setNext(this.currentMenu);
-            this.currentMenu = this.invalidInputMenu;
-        }catch (Exception ex){
-            this.currentMenu = this.exceptionMenu;
+            return currentM.getMenu(ussdSession);
+
+
+        } catch (UserInputException uie) {
+            ussdSession.setCurrentScreenID(this.invalidInputMenu.getId());
+            ussdSession.setPreviousScreenID(menuID);
+            return this.invalidInputMenu.getMenu(ussdSession);
+        } catch (Exception ex) {
+            ussdSession.setCurrentScreenID(this.initial.getId());
+
+            return this.exceptionMenu.getMenu(ussdSession);
         }
-
     }
-
 }
