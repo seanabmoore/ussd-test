@@ -24,4 +24,4 @@ Then use swagger ui or the following curl commands to interact with application:
 
 The application has also been deployed on an AWS EC2 instance, and is available at:
 
-[https://ussd.seansapps.co.za/swagger-ui.html](http://localhost/swagger-ui.html)
+[https://ussd.seansapps.co.za/swagger-ui.html](https://ussd.seansapps.co.za/swagger-ui.html)
