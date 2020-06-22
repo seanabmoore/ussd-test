@@ -17,7 +17,7 @@ docker-compose up --build
 
 Then use swagger ui or the following curl commands to interact with application:
 * Swagger UI.   [http://localhost/swagger-ui.html](http://localhost/swagger-ui.html)
-* `curl -X POST localhost:80/ussd -H 'Content-type:application/json' -d '{"msisdn": "1", "userEntry": "1", "sessionId": "123"}'`
+* `curl -X POST localhost:80/ussd -H 'Content-type:application/json' -d '{"msisdn": "1", "userEntry": "1", "sessionId": "1000"}'`
 
 
 ## Access the AWS Deployed version

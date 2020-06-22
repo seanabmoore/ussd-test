@@ -1,9 +1,9 @@
 package com.mamamoney.assignment.service;
 import org.redisson.Redisson;
-import org.redisson.api.RBucket;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
-import redis.clients.jedis.Jedis;
+
+import java.util.concurrent.TimeUnit;
 
 public class RedisCache {
 
@@ -11,8 +11,8 @@ public class RedisCache {
 
     public RedisCache() {
         Config config = new Config();
-        config.useSingleServer().setAddress("redis://redis:6379");
-        //config.useSingleServer().setAddress("redis://localhost:6379");
+        //config.useSingleServer().setAddress("redis://redis:6379");
+        config.useSingleServer().setAddress("redis://localhost:6379");
         this.cache = Redisson.create(config);
 
     }
@@ -22,6 +22,6 @@ public class RedisCache {
     }
 
     public void putCachedObject(String sessionID, Object object) {
-        cache.getBucket(sessionID).set(object);
+        cache.getBucket(sessionID).set(object,5, TimeUnit.MINUTES);
     }
 }

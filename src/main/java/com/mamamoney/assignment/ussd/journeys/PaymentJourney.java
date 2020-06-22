@@ -5,9 +5,7 @@ import com.mamamoney.assignment.model.USSDSession;
 import com.mamamoney.assignment.model.USSDRequest;
 import com.mamamoney.assignment.ussd.menus.payment.*;
 
-//TODO Make Prototype Pattern
 public class PaymentJourney extends Journey {
-    private PaymentMenu currentMenu;
     private PaymentMenu invalidInputMenu;
     private PaymentMenu exceptionMenu;
     private PaymentMenu initial;
@@ -17,10 +15,6 @@ public class PaymentJourney extends Journey {
         PaymentMenu paymentAmount = new PaymentAmountMenu();
         PaymentMenu confirmationMenu = new ConfirmationMenu();
         PaymentMenu paymentEndMenu = new PaymentEndMenu();
-
-        this.invalidInputMenu = new InvalidInputMenu();
-        this.exceptionMenu = new ExceptionMenu();
-
         welcomeMenu.setNext(paymentAmount.getId());
         paymentAmount.setNext(confirmationMenu.getId());
         confirmationMenu.setNext(paymentEndMenu.getId());
@@ -30,8 +24,11 @@ public class PaymentJourney extends Journey {
         this.addMenus(confirmationMenu);
         this.addMenus(paymentEndMenu);
 
-        this.currentMenu = welcomeMenu;
         this.initial = welcomeMenu;
+        this.invalidInputMenu = new InvalidInputMenu();
+        this.exceptionMenu = new ExceptionMenu();
+
+
     }
 
     public String handleRequest(USSDRequest ussdRequest, USSDSession ussdSession) {
@@ -44,6 +41,7 @@ public class PaymentJourney extends Journey {
         }
 
         if ( this.invalidInputMenu.getId().equals(menuID)){
+
             menuID = ussdSession.getPreviousScreenID();
             userEntry = null;
         }

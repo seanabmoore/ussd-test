@@ -20,5 +20,6 @@ public class PaymentAmountMenu extends PaymentMenu {
         }catch (NumberFormatException nfe){
             throw new UserInputException(nfe.getMessage());
         }
+
     }
 }
